@@ -103,24 +103,11 @@ def rm_student(*args):
         if not is_input_valid(arg):
             rm_student(input("Please specify the student(s) to be removed from your pool: "))
             return
-    try:
-        with open("students.txt", "r", encoding="utf-8") as file:
-            lines = file.readlines()
-            #this gets all the lines in students.txt so they can be used for the next step
-    except:
-        print("No file named students.txt exists in this directory. Would you like to create a new file?")
-        answer = input("y/n    ")
-        if answer == "y":
-            create_pool(input("Please specify the amount of students in your class: "))
-        elif answer == "n":
-            print("This script relies on students.txt to fetch random students you have not yet picked. Without the file, it won't run.")
-            print("For questions about this script's functionalities, please refer to the manual with the '-h' flag or review the source code.")
-        else:
-            print("Invalid input! Please input 'y' for 'yes' or 'n' for 'no'!")
-            rm_student(args)
-    student_removed = False
-    with open("students.txt", "w+", encoding="utf-8") as file:
-        if not file.read(1):
+    with open("students.txt", "r", encoding="utf-8") as file:
+        lines = file.readlines()
+        #this gets all the lines in students.txt so they can be used for the next steps
+        print(f"len(lines): {len(lines)}")
+        if len(lines) == 0:
             print("Your pool is empty! Do you want to reset students.txt?")
             answer = input("y/n    ")
             if answer == "y":
@@ -132,6 +119,8 @@ def rm_student(*args):
                 print("Invalid input! Please enter 'y' for 'yes' or 'n' for 'no'!")
                 get_student()
                 return
+    student_removed = False
+    with open("students.txt", "w+", encoding="utf-8") as file:
         for line in lines:
             #filters out all students entered as arguments and writes those who are not meant to be removed, 
             #returning a file containing all students except the ones specified for removal
